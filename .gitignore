@@ -1,14 +1,38 @@
+
+
+# Application Specific ---
+
+
+# Slim StarterKit --- 
 vendor/
-node_modules/
-
-# Laravel 4 specific
-bootstrap/compiled.php
-app/storage/
-
-# Laravel 5 & Lumen specific
-bootstrap/cache/
 storage/
-.env.*.php
-.env.php
-.env
-.env.example
+viewcache/
+logs/
+
+
+# Composer ---
+composer.phar
+vendor/
+
+# Commit your application's lock file http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file
+# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
+# composer.lock
+
+
+### Standard Rules ###
+
+# OS generated files ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+
+# Editors PHPStorm ---
+workspace.xml
+
