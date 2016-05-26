@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "49fed9458bfdf9bbff10e0366b51a410",
+    "hash": "bd3ae5593628114d57494d799de72721",
     "content-hash": "b255411475d14ae1c1b4764d3183f5be",
     "packages": [
         {
@@ -337,16 +337,16 @@
         },
         {
             "name": "slim/slim",
-            "version": "3.4.1",
+            "version": "3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim.git",
-                "reference": "794073a27b2dd9ef492124263038291b7f8daeb3"
+                "reference": "a132385f736063d00632b52b3f8a389fe66fe4fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim/zipball/794073a27b2dd9ef492124263038291b7f8daeb3",
-                "reference": "794073a27b2dd9ef492124263038291b7f8daeb3",
+                "url": "https://api.github.com/repos/slimphp/Slim/zipball/a132385f736063d00632b52b3f8a389fe66fe4fa",
+                "reference": "a132385f736063d00632b52b3f8a389fe66fe4fa",
                 "shasum": ""
             },
             "require": {
@@ -403,7 +403,7 @@
                 "micro",
                 "router"
             ],
-            "time": "2016-05-16 18:49:10"
+            "time": "2016-05-25 11:23:38"
         },
         {
             "name": "slim/twig-view",
@@ -905,16 +905,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "3.3.1",
+            "version": "3.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "2431befdd451fac43fbcde94d1a92fb3b8b68f86"
+                "reference": "4862dac433cbdb4438b593fa7f79e07559ba157e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/2431befdd451fac43fbcde94d1a92fb3b8b68f86",
-                "reference": "2431befdd451fac43fbcde94d1a92fb3b8b68f86",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/4862dac433cbdb4438b593fa7f79e07559ba157e",
+                "reference": "4862dac433cbdb4438b593fa7f79e07559ba157e",
                 "shasum": ""
             },
             "require": {
@@ -964,7 +964,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-04-08 08:14:53"
+            "time": "2016-05-25 06:48:21"
         },
         {
             "name": "phpunit/php-file-iterator",
