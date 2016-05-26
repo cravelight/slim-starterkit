@@ -1,12 +1,28 @@
 <?php
-// Application middleware
-// http://www.slimframework.com/docs/concepts/middleware.html
-// e.g: $app->add(new \Slim\Csrf\Guard);
-
+/**
+ * This file is for application wide middleware.
+ * Application middleware is invoked for every incoming HTTP request.
+ * http://www.slimframework.com/docs/concepts/middleware.html
+ *
+ * Note how middleware works...
+ *
+ *  function ($request, $response, $next) {
+ *      // code here happens on the way in...
+ *
+ *      // this line triggers either the next middleware
+ *      // or the route handler if there is no more middleware
+ *      $response = $next($request, $response);
+ *
+ *      // code here happens on the way out... (after the route handler)
+ *
+ *      // finally we have to return the response
+ *      return $response;
+ *  };
+ *
+ */
 
 use Slim\Http\Request;
 use Slim\Http\Response;
-
 
 
 // -----------------------------------------------------------------------------
@@ -22,4 +38,5 @@ $app->add(function (Request $request, Response $response, callable $next) {
 
     return $next($request, $response);
 });
+
 
