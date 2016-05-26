@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Actions;
+namespace App\RouteHandlers\Web;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
 
 
-class Home extends ActionBase
+class HomeAction extends BaseAction
 {
     public function __invoke(Request $request, Response $response, $args)
     {

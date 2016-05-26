@@ -5,14 +5,14 @@ use Slim\Http\Response;
 
 
 // Home page
-$app->get('/', '\App\Actions\Home');
+$app->get('/', '\App\RouteHandlers\Web\HomeAction');
 
 
 // API Version 1
 $app->group('/api/v1/{apikey}', function () {
 
     // Ping
-    $this->get('/ping', '\App\Actions\Api\Ping');
+    $this->get('/ping', '\App\RouteHandlers\Api\PingAction');
 
 })->add(function (Request $request, Response $response, callable $next) {
 
