@@ -7,7 +7,7 @@ use Slim\Container;
 use Monolog\Logger;
 
 
-class ActionBase
+class ApiActionBase
 {
     /**
      * @var Container

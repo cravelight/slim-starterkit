@@ -18,6 +18,12 @@ Tracy\Debugger::enable();
 // Load the settings
 // -----------------------------------------------------------------------------
 
+// Slim Framework settings
+$launch_settings['settings'] = [
+    // Set this to true only if you need route params in APPLICATION level middleware
+    'determineRouteBeforeAppMiddleware' => false,
+];
+
 $launch_settings['environment'] = [
     'debug_mode' => isset($_ENV['APPLICATION_DEBUG_MODE']) ?  $_ENV['APPLICATION_DEBUG_MODE'] : false,
 ];
