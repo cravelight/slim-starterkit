@@ -1,0 +1,40 @@
+{% extends "_layout.twig" %}
+
+{% block title %}Sign In{% endblock %}
+
+{% block topnav %}
+    {% include "shared/_navbar-plain.twig" %}
+{% endblock %}
+
+
+{% block content %}
+
+    <h1>Sign In</h1>
+
+    <p class="text-muted">Enter your details below.</p>
+
+    <form class="center-form center-block" action="/account/login" method="post" name="login">
+        <div class="card card-block">
+            <div class="form-group row">
+                <label class="form-control-label col-sm-3">Email</label>
+                <div class="col-sm-9">
+                    <input type="email" class="form-control" placeholder="name@domain.com">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="form-control-label col-sm-3">Password</label>
+                <div class="col-sm-9">
+                    <input type="password" class="form-control">
+                </div>
+            </div>
+
+            <div class="text-sm-right">
+                <input type="submit" class="btn btn-primary" value="Sign In">
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+
+

@@ -6,7 +6,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 
-class PingAction extends BaseAction
+class PingAction extends ApiHandlerBase
 {
     public function __invoke(Request $request, Response $response, $args)
     {

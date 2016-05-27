@@ -4,10 +4,11 @@ namespace App\RouteHandlers\Api;
 
 
 use Slim\Container;
-use Monolog\Logger;
+use Psr\Log\LoggerInterface as Logger;
 
 
-class BaseAction
+
+class ApiHandlerBase
 {
     /**
      * @var Container

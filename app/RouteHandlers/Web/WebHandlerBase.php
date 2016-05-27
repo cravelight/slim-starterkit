@@ -4,11 +4,11 @@ namespace App\RouteHandlers\Web;
 
 
 use Slim\Container;
-use Monolog\Logger;
+use Psr\Log\LoggerInterface as Logger;
 use Slim\Views\Twig;
 
 
-class BaseAction
+class WebHandlerBase
 {
     /**
      * @var Container

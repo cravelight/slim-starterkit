@@ -17,16 +17,23 @@ $container['view'] = function ($container) {
     if ($settings['environment']['debug_mode']) {
         $view->addExtension(new Twig_Extension_Debug());
     }
+
+    // Instantiate and add Slim specific extension
+    $basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
+    $view->addExtension(new Slim\Views\TwigExtension($container['router'], $basePath));
+
     return $view;
 };
 
 
 // -----------------------------------------------------------------------------
-// Logging [Monolog](https://github.com/Seldaek/monolog)
+// Consumers of this expect a PSR-3 LoggerInterface. Psr\Log\LoggerInterface
+//      https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
 // -----------------------------------------------------------------------------
 $container['logger'] = function ($container) {
     $settings = $container->get('settings');
 
+    // Monolog https://github.com/Seldaek/monolog
     $logger = new \Monolog\Logger($settings['logger']['name']);
 
     // Add one or more processors

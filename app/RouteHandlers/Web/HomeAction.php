@@ -6,7 +6,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 
-class HomeAction extends BaseAction
+class HomeAction extends WebHandlerBase
 {
     public function __invoke(Request $request, Response $response, $args)
     {
@@ -14,8 +14,10 @@ class HomeAction extends BaseAction
 //        $this->logger->addError('an error was here');
 //        \Tracy\Debugger::barDump($this, 'container');
 
-        $fooBar = json_encode(['foo' => 'bar'], JSON_PRETTY_PRINT);
+        $currentUser = ['Name' => 'Joe User'];
 
-        return $this->view->render($response, 'Home.twig', ['fooBar' => $fooBar]);
+        $currentUser = null;
+
+        return $this->view->render($response, 'home.twig', ['currentUser' => $currentUser]);
     }
 }

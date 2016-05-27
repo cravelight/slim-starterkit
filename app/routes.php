@@ -8,6 +8,29 @@ use Slim\Http\Response;
 $app->get('/', '\App\RouteHandlers\Web\HomeAction');
 
 
+
+// User Account Management
+$app->group('/account', function () {
+
+    // Register
+    $this->get('/register', '\App\RouteHandlers\Web\UserAccountController:getRegister');
+    $this->post('/register', '\App\RouteHandlers\Web\UserAccountController:postRegister');
+
+    // Login
+    $this->get('/login', '\App\RouteHandlers\Web\UserAccountController:getLogin');
+    $this->post('/login', '\App\RouteHandlers\Web\UserAccountController:postLogin');
+
+    // Authenticated Routes
+
+
+    // Ping
+
+});
+
+
+
+
+
 // API Version 1
 $app->group('/api/v1/{apikey}', function () {
 
