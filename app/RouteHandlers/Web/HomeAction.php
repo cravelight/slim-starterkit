@@ -14,8 +14,6 @@ class HomeAction extends WebHandlerBase
 //        $this->logger->addError('an error was here');
 //        \Tracy\Debugger::barDump($this, 'container');
 
-        $currentUser = ['Name' => 'Joe User'];
-
         $currentUser = null;
 
         return $this->view->render($response, 'home.twig', ['currentUser' => $currentUser]);

@@ -13,17 +13,29 @@ $app->get('/', '\App\RouteHandlers\Web\HomeAction');
 $app->group('/account', function () {
 
     // Register
-    $this->get('/register', '\App\RouteHandlers\Web\UserAccountController:getRegister');
-    $this->post('/register', '\App\RouteHandlers\Web\UserAccountController:postRegister');
+    $this->get('/register', '\App\RouteHandlers\Web\UserAuthenticationController:getRegister');
+    $this->post('/register', '\App\RouteHandlers\Web\UserAuthenticationController:postRegister');
+
+    // Confirm Registration
+    $this->get('/confirm', '\App\RouteHandlers\Web\UserAuthenticationController:getConfirm');
+    $this->post('/confirm', '\App\RouteHandlers\Web\UserAuthenticationController:postConfirm');
 
     // Login
-    $this->get('/login', '\App\RouteHandlers\Web\UserAccountController:getLogin');
-    $this->post('/login', '\App\RouteHandlers\Web\UserAccountController:postLogin');
+    $this->get('/login', '\App\RouteHandlers\Web\UserAuthenticationController:getLogin');
+    $this->post('/login', '\App\RouteHandlers\Web\UserAuthenticationController:postLogin');
 
     // Authenticated Routes
+    $this->group('', function () {
+
+        // Account Home
+        $this->get('', '\App\RouteHandlers\Web\UserAccountController:getHome');
 
 
-    // Ping
+    })->add(function (Request $request, Response $response, callable $next) {
+        // todo: actually authenticate using JWT goodness
+        $response = $next($request, $response);
+        return $response;
+    });
 
 });
 
