@@ -4,7 +4,8 @@ $container = $app->getContainer();
 
 
 // -----------------------------------------------------------------------------
-// View Engine [Twig](http://twig.sensiolabs.org/)
+// view: Consumers of this expect Twig because that's what we use.
+//      http://twig.sensiolabs.org/
 // -----------------------------------------------------------------------------
 $container['view'] = function ($container) {
     $settings = $container->get('settings');
@@ -27,7 +28,7 @@ $container['view'] = function ($container) {
 
 
 // -----------------------------------------------------------------------------
-// Consumers of this expect a PSR-3 LoggerInterface. Psr\Log\LoggerInterface
+// logger: Consumers of this expect a PSR-3 LoggerInterface. Psr\Log\LoggerInterface
 //      https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
 // -----------------------------------------------------------------------------
 $container['logger'] = function ($container) {
@@ -50,6 +51,25 @@ $container['logger'] = function ($container) {
     return $logger;
 };
 
+
+// -----------------------------------------------------------------------------
+// emailer: Consumers of this expect a Cravelight\Notifications\Email\IEmailHelper Interface.
+// -----------------------------------------------------------------------------
+$container['emailer'] = function ($container) {
+
+    if (empty(getenv('SENDGRID_API_KEY'))) {
+        throw new \Exception("SendGrid API key is not set.");
+    }
+    $apikey = getenv('SENDGRID_API_KEY');
+
+    if (empty(getenv('SENDGRID_FROM_ADDRESS'))) {
+        throw new \Exception("A default SendGrid FROM address is not set.");
+    }
+    $defaultFromAddress = getenv('SENDGRID_FROM_ADDRESS');
+
+    return new SendGridV2Helper($apikey, $defaultFromAddress);
+
+};
 
 
 

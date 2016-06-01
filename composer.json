@@ -23,6 +23,8 @@
     "nesbot/Carbon": "^1.21",
     "tracy/tracy": "^2.3",
     "monolog/monolog": "^1.19",
-    "sendgrid/sendgrid": "~4.0"
+    "sendgrid/sendgrid": "~4.0",
+    "lcobucci/jwt": "^3.1",
+    "respect/validation": "^1.1"
   }
 }

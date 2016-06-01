@@ -13,6 +13,7 @@ class HomeAction extends WebHandlerBase
 //        $this->logger->addInfo("an info was here");
 //        $this->logger->addError('an error was here');
 //        \Tracy\Debugger::barDump($this, 'container');
+//        \Tracy\Debugger::barDump($this->container->get('settings'), 'settings');
 
         $currentUser = null;
 
