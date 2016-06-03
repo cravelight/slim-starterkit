@@ -1,17 +1,40 @@
 <?php
 
+/**
+ * The only reasons to touch this file are:
+ * - Override the default value of a SlimFramework setting
+ * - Create a custom settings array for settings that get used outside of the container
+ * - session_start() before SlimFramework launches
+ */
+
+
 // -----------------------------------------------------------------------------
 // Standardize the environment
 // -----------------------------------------------------------------------------
-define('SITE_ROOT', dirname(dirname(dirname(__FILE__))) . '/');
-define('APP_ROOT', SITE_ROOT . 'app/');
-define('WEB_ROOT', APP_ROOT . 'public/');
+$launch_settings['environment']['path_site_root'] = dirname(dirname(dirname(__FILE__))) . '/';
+$launch_settings['environment']['path_app_root'] = $launch_settings['environment']['path_site_root'] . 'app/';
+$launch_settings['environment']['path_web_root'] = $launch_settings['environment']['path_site_root'] . 'public/';
 date_default_timezone_set('UTC');
-require SITE_ROOT . 'vendor/autoload.php';
+require $launch_settings['environment']['path_site_root'] . 'vendor/autoload.php';
 
+
+// Load environment variables (https://github.com/vlucas/phpdotenv)
+$dotenv = new Dotenv\Dotenv($launch_settings['environment']['path_site_root']);
+$dotenv->load();
+require $launch_settings['environment']['path_app_root'] . 'environment.php';
+
+
+
+
+// -----------------------------------------------------------------------------
+// Debugger
+// -----------------------------------------------------------------------------
 // Tracy Debugger Docs ( https://tracy.nette.org/en/ )
-Tracy\Debugger::enable();
 // Example: Tracy\Debugger::barDump($_ENV, '$_ENV');
+if (getenv('APPLICATION_DEBUG_MODE')) {
+    Tracy\Debugger::enable();
+}
+
 
 
 // -----------------------------------------------------------------------------
@@ -48,25 +71,24 @@ $launch_settings['displayErrorDetails'] = true;
 // -----------------------------------------------------------------------------
 // Custom Settings Arrays
 // -----------------------------------------------------------------------------
+/*
+    Set one up like this...
 
-$launch_settings['environment'] = [
-    'debug_mode' => isset($_ENV['APPLICATION_DEBUG_MODE']) ?  $_ENV['APPLICATION_DEBUG_MODE'] : false,
-];
+    $launch_settings['your_group_key'] = [
+        'this_setting' => true,
+        'that_setting' => 42,
+        'the_other_setting' => [
+            // http://twig.sensiolabs.org/doc/api.html#environment-options
+            'foo' => $launch_settings['environment']['path_site_root'] . 'path/to/something',
+            'bar' => time(),
+        ],
+    ];
 
-$launch_settings['logger'] = [
-    'name' => 'applog',
-    'level' => isset($_ENV['APPLICATION_LOG_LEVEL']) ?  $_ENV['APPLICATION_LOG_LEVEL'] : 400,
-    'path' => SITE_ROOT . 'logs/' . date('Y-m-d') . '.log',
-];
+    Later inside Slim you can use it like this...
 
-$launch_settings['view'] = [
-    'template_path' => APP_ROOT . 'views',
-    'twig' => [
-        'cache' => SITE_ROOT . 'cache/views',
-        'debug' => $launch_settings['environment']['debug_mode'],
-        'auto_reload' => true,
-    ],
-];
+    $foo_path = $app->getContainer()->get('settings')['your_group_key']['the_other_setting']['foo'];
+
+*/
 
 
 // -----------------------------------------------------------------------------
@@ -77,9 +99,9 @@ $launch_settings['view'] = [
 
 $app = new \Slim\App(['settings' => $launch_settings]); // Instantiate the app
 
-require APP_ROOT . 'container.php';     // Set up dependencies
-require APP_ROOT . 'middleware.php';    // Register middleware
-require APP_ROOT . 'routes.php';        // Register routes
+require $launch_settings['environment']['path_app_root'] . 'container.php';     // Set up dependencies
+require $launch_settings['environment']['path_app_root'] . 'middleware.php';    // Register middleware
+require $launch_settings['environment']['path_app_root'] . 'routes.php';        // Register routes
 
 
 // Run!

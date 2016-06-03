@@ -1,4 +1,4 @@
-<?php require 'bootstrap.php';
+<?php require 'ApiClient.php';
 
 use SlimStartkitTests\ApiClient;
 
@@ -12,8 +12,8 @@ class PingTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->key = 1234567890;
-        $this->secret = API_TEST_SECRET;
-        $this->url = API_TEST_URL;
+        $this->secret = getenv('API_TEST_SECRET');
+        $this->url = getenv('API_TEST_URL');
     }
 
 

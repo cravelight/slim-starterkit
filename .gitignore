@@ -15,6 +15,12 @@ vendor/
 # composer.lock
 
 
+# Package vlucas/phpdotenv ---
+.env
+
+
+
+
 # OS generated files ---
 .DS_Store
 .DS_Store?
