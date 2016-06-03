@@ -31,7 +31,7 @@ require $launch_settings['environment']['path_app_root'] . 'environment.php';
 // -----------------------------------------------------------------------------
 // Tracy Debugger Docs ( https://tracy.nette.org/en/ )
 // Example: Tracy\Debugger::barDump($_ENV, '$_ENV');
-if (getenv('APPLICATION_DEBUG_MODE')) {
+if (getenv('APPLICATION_DEBUG_IS_ENABLED')) {
     Tracy\Debugger::enable();
 }
 
@@ -106,5 +106,3 @@ require $launch_settings['environment']['path_app_root'] . 'routes.php';        
 
 // Run!
 $app->run();
-
-

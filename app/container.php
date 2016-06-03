@@ -14,8 +14,8 @@ $container['view'] = function ($container) {
 
     $twigSettings = [ // http://twig.sensiolabs.org/doc/api.html#environment-options
         'cache' => $settings['environment']['path_site_root'] . 'cache/views',
-        'debug' => getenv('APPLICATION_DEBUG_MODE'),
-        'auto_reload' => getenv('APPLICATION_DEBUG_MODE'),
+        'debug' => (bool)getenv('APPLICATION_DEBUG_IS_ENABLED'),
+        'auto_reload' => (bool)getenv('APPLICATION_DEBUG_IS_ENABLED'),
     ];
 
     $view = new \Slim\Views\Twig($path, $twigSettings);
@@ -24,7 +24,7 @@ $container['view'] = function ($container) {
     $view->addExtension(new Slim\Views\TwigExtension($container->get('router'), $container->get('request')->getUri()));
 
     // Note that {{ dump(your_var_here) }} only works with this extension loaded
-    if (getenv('APPLICATION_DEBUG_MODE')) {
+    if (getenv('APPLICATION_DEBUG_IS_ENABLED')) {
         $view->addExtension(new Twig_Extension_Debug());
     }
 
@@ -47,7 +47,7 @@ $container['logger'] = function ($container) {
     $logger = new \Monolog\Logger('applog');
 
     // Add one or more processors
-    if (getenv('APPLICATION_DEBUG_MODE')) {
+    if (getenv('APPLICATION_DEBUG_IS_ENABLED')) {
         $logger->pushProcessor(new \Monolog\Processor\IntrospectionProcessor()); // Adds the line/file/class/method from which the log call originated.
     } else {
         $logger->pushProcessor(new \Monolog\Processor\UidProcessor()); // Adds a unique identifier to a log record.
@@ -56,7 +56,8 @@ $container['logger'] = function ($container) {
 
     // Add one or more push handlers
     $path = $settings['environment']['path_site_root'] . 'logs/' . date('Y-m-d') . '.log';
-    $logger->pushHandler(new \Monolog\Handler\StreamHandler($path, $_ENV['APPLICATION_LOG_LEVEL']));
+    $loglevel = $logger::toMonologLevel($_ENV['APPLICATION_LOG_LEVEL']);
+    $logger->pushHandler(new \Monolog\Handler\StreamHandler($path, $loglevel));
 
     return $logger;
 };
