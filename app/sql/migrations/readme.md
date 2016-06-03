@@ -1,0 +1,1 @@
+Home for Phinx database migrations
