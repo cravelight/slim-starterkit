@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}{% endblock %} : Slim StarterKit</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/app.css">
+    {% block head %}{% endblock %}
+</head>
+<body>
+<div class="container m-y-3">
+    {% block topnav %}
+        {% if currentUser %}
+            {% include "shared/_navbar-authenticated.twig" %}
+        {% else %}
+            {% include "shared/_navbar-public.twig" %}
+        {% endif %}
+    {% endblock %}
+    <div id="content">{% block content %}{% endblock %}</div>
+
+</div>
+<script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>
+<script src="/assets/js/app.js"></script>
+</body>
+</html>

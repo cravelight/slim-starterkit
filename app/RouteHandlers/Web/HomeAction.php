@@ -1,21 +1,22 @@
 <?php
 
-namespace App\Actions;
+namespace App\RouteHandlers\Web;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
 
 
-class Home extends ActionBase
+class HomeAction extends WebHandlerBase
 {
     public function __invoke(Request $request, Response $response, $args)
     {
 //        $this->logger->addInfo("an info was here");
 //        $this->logger->addError('an error was here');
 //        \Tracy\Debugger::barDump($this, 'container');
+//        \Tracy\Debugger::barDump($this->container->get('settings'), 'settings');
 
-        $fooBar = json_encode(['foo' => 'bar'], JSON_PRETTY_PRINT);
+        $currentUser = null;
 
-        return $this->view->render($response, 'Home.twig', ['fooBar' => $fooBar]);
+        return $this->view->render($response, 'home.twig', ['currentUser' => $currentUser]);
     }
 }

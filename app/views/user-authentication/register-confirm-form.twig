@@ -1,0 +1,47 @@
+{% extends "_layout.twig" %}
+
+{% block title %}Confirm Signup{% endblock %}
+
+{% block topnav %}
+    {% include "shared/_navbar-plain.twig" %}
+{% endblock %}
+
+
+{% block content %}
+
+    <h1>Confirm Signup</h1>
+
+    <p class="text-muted">Enter your details below.</p>
+
+    <form class="center-form center-block" action="/account/login" method="post" name="login">
+        <div class="card card-block">
+            <div class="form-group row">
+                <label class="form-control-label col-sm-3">Email</label>
+                <div class="col-sm-9">
+                    <input type="email" class="form-control" value="whatever.we.got@inthetoken.com" disabled>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="form-control-label col-sm-3">Password</label>
+                <div class="col-sm-9">
+                    <input type="password" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="form-control-label col-sm-3">Confirm Password</label>
+                <div class="col-sm-9">
+                    <input type="password_confirm" class="form-control">
+                </div>
+            </div>
+
+            <div class="text-sm-right">
+                <input type="submit" class="btn btn-primary" value="Complete Signup">
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+
+

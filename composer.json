@@ -22,6 +22,12 @@
     "slim/twig-view": "^2.1",
     "nesbot/Carbon": "^1.21",
     "tracy/tracy": "^2.3",
-    "monolog/monolog": "^1.19"
+    "monolog/monolog": "^1.19",
+    "sendgrid/sendgrid": "~4.0",
+    "lcobucci/jwt": "^3.1",
+    "respect/validation": "^1.1",
+    "vlucas/phpdotenv": "^2.2",
+    "league/flysystem": "^1.0",
+    "robmorgan/phinx": "^0.5.3"
   }
 }

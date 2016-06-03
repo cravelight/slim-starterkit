@@ -1,0 +1,17 @@
+<nav class="navbar navbar-fixed-top navbar-light bg-faded">
+    <a href="/" class="navbar-brand">Slim StarterKit</a>
+    <div class="nav navbar-nav">
+        <div class="nav navbar-nav pull-xs-right">
+            <div class="nav-item dropdown">
+                <a class="nav-item btn btn-primary-outline dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ currentUser.Name }}</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/account/profile">Profile</a>
+                    <a class="dropdown-item" href="/account/billing">Billing</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/account/security">Security</a>
+                </div>
+            </div>
+            <a class="nav-item nav-link" href="/account/logout">Sign out</a>
+        </div>
+    </div>
+</nav>

@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Actions\Api;
+namespace App\RouteHandlers\Web;
 
 
 use Slim\Container;
-use Monolog\Logger;
+use Psr\Log\LoggerInterface as Logger;
+use Slim\Views\Twig;
 
 
-class ApiActionBase
+class WebHandlerBase
 {
     /**
      * @var Container
@@ -21,12 +22,20 @@ class ApiActionBase
     protected $logger;
 
 
+    /**
+     * @var Twig
+     */
+    protected $view;
+
+
+
 
     //Constructor
     public function __construct(Container $c)
     {
         $this->container = $c;
         $this->logger = $this->container->get('logger');
+        $this->view = $this->container->get('view');
     }
 
 }

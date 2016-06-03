@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Actions\Api;
+namespace App\RouteHandlers\Api;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
 
 
-class Ping extends ApiActionBase
+class PingAction extends ApiHandlerBase
 {
     public function __invoke(Request $request, Response $response, $args)
     {

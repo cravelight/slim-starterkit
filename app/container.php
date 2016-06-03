@@ -4,33 +4,50 @@ $container = $app->getContainer();
 
 
 // -----------------------------------------------------------------------------
-// View Engine [Twig](http://twig.sensiolabs.org/)
+// view: Consumers of this expect Twig because that's what we use.
+//      http://twig.sensiolabs.org/
 // -----------------------------------------------------------------------------
 $container['view'] = function ($container) {
     $settings = $container->get('settings');
-    $view = new \Slim\Views\Twig($settings['view']['template_path'], $settings['view']['twig']);
+
+    $path = $settings['environment']['path_app_root'] . 'views';
+
+    $twigSettings = [ // http://twig.sensiolabs.org/doc/api.html#environment-options
+        'cache' => $settings['environment']['path_site_root'] . 'cache/views',
+        'debug' => getenv('APPLICATION_DEBUG_MODE'),
+        'auto_reload' => getenv('APPLICATION_DEBUG_MODE'),
+    ];
+
+    $view = new \Slim\Views\Twig($path, $twigSettings);
 
     // Add extensions
     $view->addExtension(new Slim\Views\TwigExtension($container->get('router'), $container->get('request')->getUri()));
 
     // Note that {{ dump(your_var_here) }} only works with this extension loaded
-    if ($settings['environment']['debug_mode']) {
+    if (getenv('APPLICATION_DEBUG_MODE')) {
         $view->addExtension(new Twig_Extension_Debug());
     }
+
+    // Instantiate and add Slim specific extension
+    $basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
+    $view->addExtension(new Slim\Views\TwigExtension($container['router'], $basePath));
+
     return $view;
 };
 
 
 // -----------------------------------------------------------------------------
-// Logging [Monolog](https://github.com/Seldaek/monolog)
+// logger: Consumers of this expect a PSR-3 LoggerInterface. Psr\Log\LoggerInterface
+//      https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
 // -----------------------------------------------------------------------------
 $container['logger'] = function ($container) {
     $settings = $container->get('settings');
 
-    $logger = new \Monolog\Logger($settings['logger']['name']);
+    // Monolog https://github.com/Seldaek/monolog
+    $logger = new \Monolog\Logger('applog');
 
     // Add one or more processors
-    if ($settings['environment']['debug_mode']) {
+    if (getenv('APPLICATION_DEBUG_MODE')) {
         $logger->pushProcessor(new \Monolog\Processor\IntrospectionProcessor()); // Adds the line/file/class/method from which the log call originated.
     } else {
         $logger->pushProcessor(new \Monolog\Processor\UidProcessor()); // Adds a unique identifier to a log record.
@@ -38,8 +55,31 @@ $container['logger'] = function ($container) {
     }
 
     // Add one or more push handlers
-    $logger->pushHandler(new \Monolog\Handler\StreamHandler($settings['logger']['path'], $settings['logger']['level']));
+    $path = $settings['environment']['path_site_root'] . 'logs/' . date('Y-m-d') . '.log';
+    $logger->pushHandler(new \Monolog\Handler\StreamHandler($path, $_ENV['APPLICATION_LOG_LEVEL']));
 
     return $logger;
 };
+
+
+// -----------------------------------------------------------------------------
+// emailer: Consumers of this expect a Cravelight\Notifications\Email\IEmailHelper Interface.
+// -----------------------------------------------------------------------------
+$container['emailer'] = function ($container) {
+
+    if (empty(getenv('SENDGRID_API_KEY'))) {
+        throw new \Exception("SendGrid API key is not set.");
+    }
+    $apikey = getenv('SENDGRID_API_KEY');
+
+    if (empty(getenv('SENDGRID_FROM_ADDRESS'))) {
+        throw new \Exception("A default SendGrid FROM address is not set.");
+    }
+    $defaultFromAddress = getenv('SENDGRID_FROM_ADDRESS');
+
+    return new SendGridV2Helper($apikey, $defaultFromAddress);
+
+};
+
+
 

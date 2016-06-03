@@ -5,14 +5,49 @@ use Slim\Http\Response;
 
 
 // Home page
-$app->get('/', '\App\Actions\Home');
+$app->get('/', '\App\RouteHandlers\Web\HomeAction');
+
+
+
+// User Account Management
+$app->group('/account', function () {
+
+    // Register
+    $this->get('/register', '\App\RouteHandlers\Web\UserAuthenticationController:getRegister');
+    $this->post('/register', '\App\RouteHandlers\Web\UserAuthenticationController:postRegister');
+
+    // Confirm Registration
+    $this->get('/confirm', '\App\RouteHandlers\Web\UserAuthenticationController:getConfirm');
+    $this->post('/confirm', '\App\RouteHandlers\Web\UserAuthenticationController:postConfirm');
+
+    // Login
+    $this->get('/login', '\App\RouteHandlers\Web\UserAuthenticationController:getLogin');
+    $this->post('/login', '\App\RouteHandlers\Web\UserAuthenticationController:postLogin');
+
+    // Authenticated Routes
+    $this->group('', function () {
+
+        // Account Home
+        $this->get('', '\App\RouteHandlers\Web\UserAccountController:getHome');
+
+
+    })->add(function (Request $request, Response $response, callable $next) {
+        // todo: actually authenticate using JWT goodness
+        $response = $next($request, $response);
+        return $response;
+    });
+
+});
+
+
+
 
 
 // API Version 1
 $app->group('/api/v1/{apikey}', function () {
 
     // Ping
-    $this->get('/ping', '\App\Actions\Api\Ping');
+    $this->get('/ping', '\App\RouteHandlers\Api\PingAction');
 
 })->add(function (Request $request, Response $response, callable $next) {
 
