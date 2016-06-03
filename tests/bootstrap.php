@@ -6,7 +6,7 @@
 
 $siteRoot = dirname(dirname(__FILE__)) . '/';
 date_default_timezone_set('UTC');
-//require_once $siteRoot . 'vendor/autoload.php';
+require_once $siteRoot . 'vendor/autoload.php';
 
 
 // Load environment variables (https://github.com/vlucas/phpdotenv)
