@@ -5,6 +5,7 @@ namespace App\RouteHandlers\Api;
 
 use Slim\Container;
 use Psr\Log\LoggerInterface as Logger;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 
 
@@ -22,12 +23,22 @@ class ApiHandlerBase
     protected $logger;
 
 
+    /**
+     * @var Capsule
+     */
+    protected $db;
 
-    //Constructor
+
+
+    /**
+     * ApiHandlerBase constructor.
+     * @param Container $c
+     */
     public function __construct(Container $c)
     {
         $this->container = $c;
         $this->logger = $this->container->get('logger');
+        $this->db = $this->container->get('db');
     }
 
 }

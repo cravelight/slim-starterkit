@@ -64,6 +64,42 @@ $container['logger'] = function ($container) {
 
 
 // -----------------------------------------------------------------------------
+// db: Consumers of this expect Laravel Eloquent because that's what we use.
+//      https://laravel.com/docs/5.2/eloquent
+//      https://github.com/illuminate/database
+// -----------------------------------------------------------------------------
+$container['db'] = function ($container) {
+
+    $connection = [];
+    switch (getenv('DB_ADAPTER')) {
+        case 'sqlite':
+            $connection['driver'] = 'sqlite';
+            $connection['database'] = getenv('DB_NAME');
+            break;
+
+        case 'mysql':
+            $connection['driver'] = 'mysql';
+            $connection['host'] = getenv('DB_HOST');
+            $connection['port'] = getenv('DB_PORT');
+            $connection['database'] = getenv('DB_NAME');
+            $connection['username'] = getenv('DB_USER');
+            $connection['password'] = getenv('DB_PASS');
+            $connection['charset'] = getenv('DB_CHARSET');
+            $connection['collation'] = getenv('DB_COLLATION');
+            break;
+    }
+
+    $capsule = new \Illuminate\Database\Capsule\Manager;
+    $capsule->addConnection($connection);
+    $capsule->setAsGlobal();
+    $capsule->bootEloquent();
+
+    return $capsule;
+};
+
+
+
+// -----------------------------------------------------------------------------
 // emailer: Consumers of this expect a Cravelight\Notifications\Email\IEmailHelper Interface.
 // -----------------------------------------------------------------------------
 $container['emailer'] = function ($container) {

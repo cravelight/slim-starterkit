@@ -14,7 +14,6 @@ $dotenv->load();
 
 //todo: support sql server
 $dotenv->required('DB_ADAPTER')->notEmpty()->allowedValues(['sqlite', 'mysql']); // , 'sqlsrv']);
-
 switch (getenv('DB_ADAPTER')) {
     case 'sqlite':
         $dotenv->required('DB_NAME')->notEmpty();
@@ -26,6 +25,8 @@ switch (getenv('DB_ADAPTER')) {
         $dotenv->required('DB_USER')->notEmpty();
         $dotenv->required('DB_PASS')->notEmpty();
         $dotenv->required('DB_PORT')->notEmpty()->isInteger();
+        $dotenv->required('DB_CHARSET')->notEmpty();
+        $dotenv->required('DB_COLLATION')->notEmpty();
         break;
 }
 
@@ -35,24 +36,30 @@ switch (getenv('DB_ADAPTER')) {
 // - The variable scope is local, i.e. you would need to explicitly declare any global variables your initialization file reads or modifies.
 // - Its standard output is suppressed.
 return array(
-    "paths" => array(
-        "migrations" => $siteRoot . "app/sql/migrations",
-        "seeds" => $siteRoot . "app/sql/seeds"
+    'paths' => array(
+        'migrations' => $siteRoot . 'app/sql/migrations',
+        'seeds' => $siteRoot . 'app/sql/seeds'
     ),
-    "environments" => array(
-        "default_migration_table" => "phinxlog",
-        "default_database" => getenv('DB_ADAPTER'),
-        "sqlite" => array(
-            "adapter" => "sqlite",
-            "name" => $siteRoot . 'storage/' . getenv('DB_NAME')
+    'migration_base_class' => '\Cravelight\Phinx\EloquentMigrationAdapter',
+    'aliases' => array(
+        'eloquent' => '\Cravelight\Phinx\EloquentMigrationFactory',
+    ),
+    'environments' => array(
+        'default_migration_table' => 'phinxlog',
+        'default_database' => getenv('DB_ADAPTER'),
+        'mysql' => array(
+            'adapter' => 'mysql',
+            'host' => getenv('DB_HOST'),
+            'name' => getenv('DB_NAME'),
+            'user' => getenv('DB_USER'),
+            'pass' => getenv('DB_PASS'),
+            'port' => getenv('DB_PORT'),
+            'charset' => getenv('DB_CHARSET'),
+            'collation' => getenv('DB_COLLATION'),
         ),
-        "mysql" => array(
-            "adapter" => "mysql",
-            "host" => getenv('DB_HOST'),
-            "name" => getenv('DB_NAME'),
-            "user" => getenv('DB_USER'),
-            "pass" => getenv('DB_PASS'),
-            "port" => getenv('DB_PORT')
-        )
+        'sqlite' => array(
+            'adapter' => 'sqlite',
+            'name' => getenv('DB_NAME')
+        ),
     )
 );
