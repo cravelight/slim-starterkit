@@ -50,10 +50,27 @@ class UserAuthenticationService
     }
 
 
+    // for now, we're forcing callers to store password hash when we verify token
     public function verifyAddress(string $email, string $verifyToken, string $passwordHash) : EmailAccessCredentials
     {
+        // attempt to load VerificationToken with matching email/token
+        $token = $this->verificationTokenRepo->fetch($email, $verifyToken);
+        if (is_null($token)) {
+            return null;
+        }
+
+        // if successful, store the password hash and return the EmailAccessCredentials
+        $emailAccessCredentials = $this->emailAccessCredentialRepo->fetchForEmailAddress($email);
+        if (is_null($emailAccessCredentials)) {
+            throw new \Exception('Failed to load EmailAccessCredentials for ' . $email);
+        }
+        $emailAccessCredentials->passwordHash = $passwordHash;
+        $emailAccessCredentials->verifiedOn = new \DateTime();
+        return $this->emailAccessCredentialRepo->store($emailAccessCredentials);
 
     }
+
+
 
 
     public function credentialsAreValid(string $email, string $passwordHash) : bool

@@ -115,10 +115,33 @@ class UserAuthenticationServiceTest extends Enhanced_TestCase
     public function testValidateTokenAndStorePassword()
     {
         // Arrange|Given
+        $verificationTokenRepository = m::mock('\Cravelight\Security\UserAuthentication\IVerificationTokenRepository');
+        $verificationTokenRepository->shouldReceive('fetch')
+            ->once()
+            ->andReturnUsing(function() {
+                return new VerificationToken('person@address.com');
+            });
+
+
+        $emailAccessCredentialRepository = m::mock('\Cravelight\Security\UserAuthentication\IEmailAccessCredentialRepository');
+        $r = new EmailAccessCredentials('person@address.com');
+        $emailAccessCredentialRepository->shouldReceive('fetchForEmailAddress')
+            ->once()
+            ->andReturn($r);
+        $emailAccessCredentialRepository->shouldReceive('store')
+            ->once()
+            ->andReturn($r);
+        $userAuthenticationService = new UserAuthenticationService($emailAccessCredentialRepository, $verificationTokenRepository);
+        $email = 'person@address.com';
+        $passwordHash = password_hash('1supersecret!', PASSWORD_DEFAULT);
 
         // Act|When
+        $emailAccessCredentials = $userAuthenticationService->verifyAddress($email, 'some token', $passwordHash);
 
         // Assert|Then
+        $this->assertEquals($email, $emailAccessCredentials->email);
+        $this->assertEquals($passwordHash, $emailAccessCredentials->passwordHash);
+        $this->assertEquals($emailAccessCredentials->verifiedOn->getTimestamp(), time(), '', 5);
     }
 
 
