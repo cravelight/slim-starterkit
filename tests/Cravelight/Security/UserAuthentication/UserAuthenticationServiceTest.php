@@ -1,7 +1,5 @@
 <?php
 
-use Cravelight\Security\UserAuthentication\IEmailAccessCredentialRepository;
-use Cravelight\Security\UserAuthentication\IVerificationTokenRepository;
 use Cravelight\Security\UserAuthentication\EmailAccessCredentials;
 use Cravelight\Security\UserAuthentication\VerificationToken;
 use Cravelight\Security\UserAuthentication\UserAuthenticationService;
@@ -115,6 +113,9 @@ class UserAuthenticationServiceTest extends Enhanced_TestCase
     public function testValidateTokenAndStorePassword()
     {
         // Arrange|Given
+        $email = 'person@address.com';
+        $passwordHash = password_hash('1supersecret!', PASSWORD_DEFAULT);
+
         $verificationTokenRepository = m::mock('\Cravelight\Security\UserAuthentication\IVerificationTokenRepository');
         $verificationTokenRepository->shouldReceive('fetch')
             ->once()
@@ -124,25 +125,28 @@ class UserAuthenticationServiceTest extends Enhanced_TestCase
 
 
         $emailAccessCredentialRepository = m::mock('\Cravelight\Security\UserAuthentication\IEmailAccessCredentialRepository');
-        $r = new EmailAccessCredentials('person@address.com');
+        $mockedEmailAccessCredentials = new EmailAccessCredentials('person@address.com');
+        $mockedEmailAccessCredentials->passwordHash = $passwordHash;
         $emailAccessCredentialRepository->shouldReceive('fetchForEmailAddress')
-            ->once()
-            ->andReturn($r);
+            ->andReturn($mockedEmailAccessCredentials);
         $emailAccessCredentialRepository->shouldReceive('store')
             ->once()
-            ->andReturn($r);
+            ->andReturn($mockedEmailAccessCredentials);
         $userAuthenticationService = new UserAuthenticationService($emailAccessCredentialRepository, $verificationTokenRepository);
-        $email = 'person@address.com';
-        $passwordHash = password_hash('1supersecret!', PASSWORD_DEFAULT);
 
         // Act|When
         $emailAccessCredentials = $userAuthenticationService->verifyAddress($email, 'some token', $passwordHash);
+        $userCanLogIn = $userAuthenticationService->credentialsAreValid($email, $passwordHash);
 
         // Assert|Then
         $this->assertEquals($email, $emailAccessCredentials->email);
         $this->assertEquals($passwordHash, $emailAccessCredentials->passwordHash);
         $this->assertEquals($emailAccessCredentials->verifiedOn->getTimestamp(), time(), '', 5);
+        $this->assertTrue($userCanLogIn);
     }
+
+
+
 
 
 }

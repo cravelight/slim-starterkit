@@ -71,11 +71,13 @@ class UserAuthenticationService
     }
 
 
-
-
     public function credentialsAreValid(string $email, string $passwordHash) : bool
     {
-
+        $emailAccessCredentials = $this->emailAccessCredentialRepo->fetchForEmailAddress($email);
+        if (is_null($emailAccessCredentials)) {
+            return false;
+        }
+        return $emailAccessCredentials->passwordHash === $passwordHash;
     }
 
 
