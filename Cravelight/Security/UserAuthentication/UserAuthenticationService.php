@@ -33,25 +33,25 @@ class UserAuthenticationService
 //    User clicks on link...is given the opportunity to set password
 //    After setting password account becomes confirmed and user can log in
 
-    public function registerEmailAddress(string $email) : EmailAccessCredentials
+    public function registerEmailAddress(string $email) : EmailAccessCredential
     {
-        $emailAccessCredentials = new EmailAccessCredentials($email);
-        $this->emailAccessCredentialRepo->store($emailAccessCredentials);
-        return $emailAccessCredentials;
+        $emailAccessCredential = new EmailAccessCredential($email);
+        $this->emailAccessCredentialRepo->store($emailAccessCredential);
+        return $emailAccessCredential;
     }
 
 
     public function stageVerification(string $email, int $validHours = 24) : VerificationToken
     {
         $token = new VerificationToken($email);
-        $token->expiresOn = Carbon::createFromTimestamp(time())->addHour($validHours);
+        $token->expiresAt = Carbon::createFromTimestamp(time())->addHour($validHours);
         $token->token = random_bytes(40);
         return $this->verificationTokenRepo->store($token);
     }
 
 
     // for now, we're forcing callers to store password hash when we verify token
-    public function verifyAddress(string $email, string $verifyToken, string $passwordHash) : EmailAccessCredentials
+    public function verifyAddress(string $email, string $verifyToken, string $passwordHash) : EmailAccessCredential
     {
         // attempt to load VerificationToken with matching email/token
         $token = $this->verificationTokenRepo->fetch($email, $verifyToken);
@@ -59,25 +59,25 @@ class UserAuthenticationService
             return null;
         }
 
-        // if successful, store the password hash and return the EmailAccessCredentials
-        $emailAccessCredentials = $this->emailAccessCredentialRepo->fetchForEmailAddress($email);
-        if (is_null($emailAccessCredentials)) {
-            throw new \Exception('Failed to load EmailAccessCredentials for ' . $email);
+        // if successful, store the password hash and return the EmailAccessCredential
+        $emailAccessCredential = $this->emailAccessCredentialRepo->fetchForEmailAddress($email);
+        if (is_null($emailAccessCredential)) {
+            throw new \Exception('Failed to load EmailAccessCredential for ' . $email);
         }
-        $emailAccessCredentials->passwordHash = $passwordHash;
-        $emailAccessCredentials->verifiedOn = new \DateTime();
-        return $this->emailAccessCredentialRepo->store($emailAccessCredentials);
+        $emailAccessCredential->passwordHash = $passwordHash;
+        $emailAccessCredential->verifiedAt = new \DateTime();
+        return $this->emailAccessCredentialRepo->store($emailAccessCredential);
 
     }
 
 
     public function credentialsAreValid(string $email, string $passwordHash) : bool
     {
-        $emailAccessCredentials = $this->emailAccessCredentialRepo->fetchForEmailAddress($email);
-        if (is_null($emailAccessCredentials)) {
+        $emailAccessCredential = $this->emailAccessCredentialRepo->fetchForEmailAddress($email);
+        if (is_null($emailAccessCredential)) {
             return false;
         }
-        return $emailAccessCredentials->passwordHash === $passwordHash;
+        return $emailAccessCredential->passwordHash === $passwordHash;
     }
 
 

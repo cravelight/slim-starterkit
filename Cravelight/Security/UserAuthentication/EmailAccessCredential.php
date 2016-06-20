@@ -3,7 +3,7 @@
 namespace Cravelight\Security\UserAuthentication;
 
 
-class EmailAccessCredentials
+class EmailAccessCredential
 {
     public function __construct($email)
     {
@@ -23,17 +23,17 @@ class EmailAccessCredentials
     /**
      * @var \DateTime
      */
-    public $verifiedOn;
+    public $verifiedAt;
 
     /**
      * @var \DateTime
      */
-    public $createdOn;
+    public $createdAt;
 
     /**
      * @var \DateTime
      */
-    public $updatedOn;
+    public $updatedAt;
 
 
     // Helpers...

@@ -28,7 +28,7 @@
     "respect/validation": "^1.1",
     "vlucas/phpdotenv": "^2.2",
     "league/flysystem": "^1.0",
-    "robmorgan/phinx": "^0.5.3",
+    "robmorgan/phinx": "^0.5.5",
     "illuminate/database": "^5.2",
     "illuminate/pagination": "^5.2",
     "mockery/mockery": "^0.9.5"

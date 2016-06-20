@@ -24,11 +24,11 @@ class VerificationToken
     /**
      * @var \DateTime When the token expires
      */
-    public $expiresOn;
+    public $expiresAt;
 
     /**
      * @var \DateTime When the token was created
      */
-    public $createdOn;
+    public $createdAt;
 
 }

@@ -5,8 +5,8 @@ namespace Cravelight\Security\UserAuthentication;
 
 interface IEmailAccessCredentialRepository
 {
-    public function store(EmailAccessCredentials $emailAccessCredentials) : EmailAccessCredentials;
+    public function store(EmailAccessCredential $emailAccessCredential) : EmailAccessCredential;
 
-    public function fetchForEmailAddress(string $emailAddress) : EmailAccessCredentials;
+    public function fetchForEmailAddress(string $emailAddress) : EmailAccessCredential;
 
 }

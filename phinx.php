@@ -45,7 +45,7 @@ return array(
         'eloquent' => '\Cravelight\Phinx\EloquentMigrationFactory',
     ),
     'environments' => array(
-        'default_migration_table' => 'phinxlog',
+        'default_migration_table' => '_phinx_log',
         'default_database' => getenv('DB_ADAPTER'),
         'mysql' => array(
             'adapter' => 'mysql',
@@ -59,7 +59,7 @@ return array(
         ),
         'sqlite' => array(
             'adapter' => 'sqlite',
-            'name' => getenv('DB_NAME')
+            'name' => $siteRoot . getenv('DB_NAME')
         ),
     )
 );
