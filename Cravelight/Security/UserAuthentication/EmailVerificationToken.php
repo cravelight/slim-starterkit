@@ -3,18 +3,18 @@
 namespace Cravelight\Security\UserAuthentication;
 
 
-class VerificationToken
+class EmailVerificationToken
 {
 
-    public function __construct($targetId)
+    public function __construct(string $email)
     {
-        $this->targetId = $targetId;
+        $this->email = $email;
     }
 
     /**
-     * @var mixed A reference to the thing we are verifying
+     * @var string The address being verified
      */
-    public $targetId;
+    public $email;
 
     /**
      * @var string The verification token

@@ -13,17 +13,17 @@ class UserAuthenticationService
     private $emailAccessCredentialRepo;
 
     /**
-     * @var IVerificationTokenRepository
+     * @var IEmailVerificationTokenRepository
      */
-    private $verificationTokenRepo;
+    private $emailVerificationTokenRepo;
 
 
     public function __construct(
         IEmailAccessCredentialRepository $emailAccessCredentialRepository,
-        IVerificationTokenRepository $verificationTokenRepository)
+        IEmailVerificationTokenRepository $emailVerificationTokenRepository)
     {
         $this->emailAccessCredentialRepo = $emailAccessCredentialRepository;
-        $this->verificationTokenRepo = $verificationTokenRepository;
+        $this->emailVerificationTokenRepo = $emailVerificationTokenRepository;
     }
 
 
@@ -41,20 +41,20 @@ class UserAuthenticationService
     }
 
 
-    public function stageVerification(string $email, int $validHours = 24) : VerificationToken
+    public function stageVerification(string $email, int $validHours = 24) : EmailVerificationToken
     {
-        $token = new VerificationToken($email);
+        $token = new EmailVerificationToken($email);
         $token->expiresAt = Carbon::createFromTimestamp(time())->addHour($validHours);
-        $token->token = random_bytes(40);
-        return $this->verificationTokenRepo->store($token);
+        $token->token = bin2hex(random_bytes(20)); //bin2hex converts to ascii, doubling string length
+        return $this->emailVerificationTokenRepo->store($token);
     }
 
 
     // for now, we're forcing callers to store password hash when we verify token
     public function verifyAddress(string $email, string $verifyToken, string $passwordHash) : EmailAccessCredential
     {
-        // attempt to load VerificationToken with matching email/token
-        $token = $this->verificationTokenRepo->fetch($email, $verifyToken);
+        // attempt to load EmailVerificationToken with matching email/token
+        $token = $this->emailVerificationTokenRepo->fetch($email, $verifyToken);
         if (is_null($token)) {
             return null;
         }

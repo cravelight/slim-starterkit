@@ -1,7 +1,7 @@
 <?php
 
 use Cravelight\Security\UserAuthentication\EmailAccessCredential;
-use Cravelight\Security\UserAuthentication\VerificationToken;
+use Cravelight\Security\UserAuthentication\EmailVerificationToken;
 use Cravelight\Security\UserAuthentication\UserAuthenticationService;
 use Cravelight\PhpUnit\Enhanced_TestCase;
 use \Mockery as m;
@@ -23,10 +23,10 @@ class UserAuthenticationServiceTest extends Enhanced_TestCase
     {
         // Arrange|Given
         $emailAccessCredentialRepository = m::mock('\Cravelight\Security\UserAuthentication\IEmailAccessCredentialRepository');
-        $verificationTokenRepository = m::mock('\Cravelight\Security\UserAuthentication\IVerificationTokenRepository');
+        $emailVerificationTokenRepository = m::mock('\Cravelight\Security\UserAuthentication\IEmailVerificationTokenRepository');
 
         // Act|When
-        $userAuthenticationService = new UserAuthenticationService($emailAccessCredentialRepository, $verificationTokenRepository);
+        $userAuthenticationService = new UserAuthenticationService($emailAccessCredentialRepository, $emailVerificationTokenRepository);
 
         // Assert|Then
         $this->assertInstanceOf('Cravelight\Security\UserAuthentication\UserAuthenticationService', $userAuthenticationService);
@@ -50,8 +50,8 @@ class UserAuthenticationServiceTest extends Enhanced_TestCase
                 return $accessCredential;
             });
 
-        $verificationTokenRepository = m::mock('\Cravelight\Security\UserAuthentication\IVerificationTokenRepository');
-        $userAuthenticationService = new UserAuthenticationService($emailAccessCredentialRepository, $verificationTokenRepository);
+        $emailVerificationTokenRepository = m::mock('\Cravelight\Security\UserAuthentication\IEmailVerificationTokenRepository');
+        $userAuthenticationService = new UserAuthenticationService($emailAccessCredentialRepository, $emailVerificationTokenRepository);
         $email = 'person@address.com';
 
 
@@ -79,24 +79,24 @@ class UserAuthenticationServiceTest extends Enhanced_TestCase
     {
         // Arrange|Given
         $emailAccessCredentialRepository = m::mock('\Cravelight\Security\UserAuthentication\IEmailAccessCredentialRepository');
-        $verificationTokenRepository = m::mock('\Cravelight\Security\UserAuthentication\IVerificationTokenRepository');
-        $verificationTokenRepository->shouldReceive('store')
+        $emailVerificationTokenRepository = m::mock('\Cravelight\Security\UserAuthentication\IEmailVerificationTokenRepository');
+        $emailVerificationTokenRepository->shouldReceive('store')
             ->once()
-            ->with(m::type('\Cravelight\Security\UserAuthentication\VerificationToken'))
-            ->andReturnUsing(function($verificationToken) {
+            ->with(m::type('\Cravelight\Security\UserAuthentication\EmailVerificationToken'))
+            ->andReturnUsing(function($emailVerificationToken) {
                 $now = new DateTime();
-                $verificationToken->createdAt = $now;
-                $verificationToken->expiresAt = new DateTime('@' . ($now->getTimestamp() + (60*60*24)));
-                return $verificationToken;
+                $emailVerificationToken->createdAt = $now;
+                $emailVerificationToken->expiresAt = new DateTime('@' . ($now->getTimestamp() + (60*60*24)));
+                return $emailVerificationToken;
             });
-        $userAuthenticationService = new UserAuthenticationService($emailAccessCredentialRepository, $verificationTokenRepository);
+        $userAuthenticationService = new UserAuthenticationService($emailAccessCredentialRepository, $emailVerificationTokenRepository);
         $email = 'person@address.com';
 
         // Act|When
         $token = $userAuthenticationService->stageVerification($email);
 
         // Assert|Then
-        $this->assertEquals($email, $token->targetId);
+        $this->assertEquals($email, $token->email);
         $this->assertIsStringOfLength($token->token, 40);
         $this->assertNotNull($token->createdAt);
         $this->assertInstanceOf('\DateTime', $token->createdAt);
@@ -116,11 +116,11 @@ class UserAuthenticationServiceTest extends Enhanced_TestCase
         $email = 'person@address.com';
         $passwordHash = password_hash('1supersecret!', PASSWORD_DEFAULT);
 
-        $verificationTokenRepository = m::mock('\Cravelight\Security\UserAuthentication\IVerificationTokenRepository');
-        $verificationTokenRepository->shouldReceive('fetch')
+        $emailVerificationTokenRepository = m::mock('\Cravelight\Security\UserAuthentication\IEmailVerificationTokenRepository');
+        $emailVerificationTokenRepository->shouldReceive('fetch')
             ->once()
             ->andReturnUsing(function() {
-                return new VerificationToken('person@address.com');
+                return new EmailVerificationToken('person@address.com');
             });
 
 
@@ -132,7 +132,7 @@ class UserAuthenticationServiceTest extends Enhanced_TestCase
         $emailAccessCredentialRepository->shouldReceive('store')
             ->once()
             ->andReturn($mockedEmailAccessCredential);
-        $userAuthenticationService = new UserAuthenticationService($emailAccessCredentialRepository, $verificationTokenRepository);
+        $userAuthenticationService = new UserAuthenticationService($emailAccessCredentialRepository, $emailVerificationTokenRepository);
 
         // Act|When
         $emailAccessCredential = $userAuthenticationService->verifyAddress($email, 'some token', $passwordHash);

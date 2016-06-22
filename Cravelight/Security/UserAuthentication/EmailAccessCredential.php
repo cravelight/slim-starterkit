@@ -5,7 +5,7 @@ namespace Cravelight\Security\UserAuthentication;
 
 class EmailAccessCredential
 {
-    public function __construct($email)
+    public function __construct(string $email)
     {
         $this->email = $email;
     }

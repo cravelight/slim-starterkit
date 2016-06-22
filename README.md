@@ -6,7 +6,7 @@ todo: describe approach
 
 ## Handy commands
 
-- Create a new eloquent migration
-  `php vendor/bin/phinx create MyNewMigration --class=eloquent`
+- Create a new migration
+  `php vendor/bin/phinx create MyNewMigration`
 - Run migrations
   `php vendor/bin/phinx migrate`

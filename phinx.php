@@ -40,10 +40,6 @@ return array(
         'migrations' => $siteRoot . 'app/sql/migrations',
         'seeds' => $siteRoot . 'app/sql/seeds'
     ),
-    'migration_base_class' => '\Cravelight\Phinx\EloquentMigrationAdapter',
-    'aliases' => array(
-        'eloquent' => '\Cravelight\Phinx\EloquentMigrationFactory',
-    ),
     'environments' => array(
         'default_migration_table' => '_phinx_log',
         'default_database' => getenv('DB_ADAPTER'),
