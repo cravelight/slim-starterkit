@@ -5,7 +5,7 @@ namespace Cravelight\Security\UserAuthentication;
 use Carbon\Carbon;
 
 
-class UserAuthenticationService
+class EmailAuthenticationService
 {
     /**
      * @var IEmailAccessCredentialRepository

@@ -2,12 +2,12 @@
 
 use Cravelight\Security\UserAuthentication\EmailAccessCredential;
 use Cravelight\Security\UserAuthentication\EmailVerificationToken;
-use Cravelight\Security\UserAuthentication\UserAuthenticationService;
+use Cravelight\Security\UserAuthentication\EmailAuthenticationService;
 use Cravelight\PhpUnit\Enhanced_TestCase;
 use \Mockery as m;
 
 
-class UserAuthenticationServiceTest extends Enhanced_TestCase
+class EmailAuthenticationServiceTest extends Enhanced_TestCase
 {
     protected function setUp()
     {
@@ -19,17 +19,17 @@ class UserAuthenticationServiceTest extends Enhanced_TestCase
     }
 
 
-    public function testCreateUserAuthenticationService()
+    public function testCreateEmailAuthenticationService()
     {
         // Arrange|Given
         $emailAccessCredentialRepository = m::mock('\Cravelight\Security\UserAuthentication\IEmailAccessCredentialRepository');
         $emailVerificationTokenRepository = m::mock('\Cravelight\Security\UserAuthentication\IEmailVerificationTokenRepository');
 
         // Act|When
-        $userAuthenticationService = new UserAuthenticationService($emailAccessCredentialRepository, $emailVerificationTokenRepository);
+        $emailAuthenticationService = new EmailAuthenticationService($emailAccessCredentialRepository, $emailVerificationTokenRepository);
 
         // Assert|Then
-        $this->assertInstanceOf('Cravelight\Security\UserAuthentication\UserAuthenticationService', $userAuthenticationService);
+        $this->assertInstanceOf('Cravelight\Security\UserAuthentication\EmailAuthenticationService', $emailAuthenticationService);
 
     }
 
@@ -51,12 +51,12 @@ class UserAuthenticationServiceTest extends Enhanced_TestCase
             });
 
         $emailVerificationTokenRepository = m::mock('\Cravelight\Security\UserAuthentication\IEmailVerificationTokenRepository');
-        $userAuthenticationService = new UserAuthenticationService($emailAccessCredentialRepository, $emailVerificationTokenRepository);
+        $emailAuthenticationService = new EmailAuthenticationService($emailAccessCredentialRepository, $emailVerificationTokenRepository);
         $email = 'person@address.com';
 
 
         // Act|When
-        $accessCreds = $userAuthenticationService->registerEmailAddress($email);
+        $accessCreds = $emailAuthenticationService->registerEmailAddress($email);
 
 
         // Assert|Then
@@ -89,11 +89,11 @@ class UserAuthenticationServiceTest extends Enhanced_TestCase
                 $emailVerificationToken->expiresAt = new DateTime('@' . ($now->getTimestamp() + (60*60*24)));
                 return $emailVerificationToken;
             });
-        $userAuthenticationService = new UserAuthenticationService($emailAccessCredentialRepository, $emailVerificationTokenRepository);
+        $emailAuthenticationService = new EmailAuthenticationService($emailAccessCredentialRepository, $emailVerificationTokenRepository);
         $email = 'person@address.com';
 
         // Act|When
-        $token = $userAuthenticationService->stageVerification($email);
+        $token = $emailAuthenticationService->stageVerification($email);
 
         // Assert|Then
         $this->assertEquals($email, $token->email);
@@ -132,11 +132,11 @@ class UserAuthenticationServiceTest extends Enhanced_TestCase
         $emailAccessCredentialRepository->shouldReceive('store')
             ->once()
             ->andReturn($mockedEmailAccessCredential);
-        $userAuthenticationService = new UserAuthenticationService($emailAccessCredentialRepository, $emailVerificationTokenRepository);
+        $emailAuthenticationService = new EmailAuthenticationService($emailAccessCredentialRepository, $emailVerificationTokenRepository);
 
         // Act|When
-        $emailAccessCredential = $userAuthenticationService->verifyAddress($email, 'some token', $passwordHash);
-        $userCanLogIn = $userAuthenticationService->credentialsAreValid($email, $passwordHash);
+        $emailAccessCredential = $emailAuthenticationService->verifyAddress($email, 'some token', $passwordHash);
+        $userCanLogIn = $emailAuthenticationService->credentialsAreValid($email, $passwordHash);
 
         // Assert|Then
         $this->assertEquals($email, $emailAccessCredential->email);
