@@ -1,5 +1,5 @@
 <?php
 
-class EmailAccessCredentialRepositoryMigration extends \Cravelight\Security\UserAuthentication\EmailAccessCredentialRepositoryMigration
+class EmailAccessCredentialRepositoryMigration extends \Cravelight\Security\UserAuthentication\DataAccess\Migrations\EmailAccessCredentialRepositoryMigration
 {
 }

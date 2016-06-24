@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7cea994559baf955ddd50eebf141ec1f",
-    "content-hash": "f8d486a5509e5df429728e4bbb4b83ad",
+    "hash": "96582012fb13b0696e09c716cab74116",
+    "content-hash": "333b6294c754ff1f71fe10ab53b0e3c9",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -33,6 +33,56 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "time": "2014-12-30 15:22:37"
+        },
+        {
+            "name": "cravelight/email-authentication-service",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cravelight/php-email-authentication-service.git",
+                "reference": "56e211040b509349429823413b1b61fb68663e1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cravelight/php-email-authentication-service/zipball/56e211040b509349429823413b1b61fb68663e1d",
+                "reference": "56e211040b509349429823413b1b61fb68663e1d",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^5.2",
+                "nesbot/carbon": "^1.21",
+                "php": "^7.0",
+                "robmorgan/phinx": "^0.5.5",
+                "vlucas/phpdotenv": "^2.2"
+            },
+            "require-dev": {
+                "cravelight/phpunit-helpers": "^1.0.0",
+                "mockery/mockery": "^0.9.5",
+                "phpunit/phpunit": "^5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cravelight\\Security\\UserAuthentication\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "cravelight",
+                    "email": "cravelight@gmail.com",
+                    "homepage": "https://github.com/cravelight"
+                }
+            ],
+            "description": "Email address authentication service",
+            "homepage": "https://github.com/cravelight/php-email-authentication-service",
+            "keywords": [
+                "Authentication"
+            ],
+            "time": "2016-06-24 22:58:40"
         },
         {
             "name": "doctrine/inflector",

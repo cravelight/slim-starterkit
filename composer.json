@@ -36,6 +36,9 @@
     "lcobucci/jwt": "^3.1",
 
     "illuminate/database": "^5.2",
-    "illuminate/pagination": "^5.2"
+    "illuminate/pagination": "^5.2",
+
+    "cravelight/email-authentication-service": "^1.0.0"
+
   }
 }
