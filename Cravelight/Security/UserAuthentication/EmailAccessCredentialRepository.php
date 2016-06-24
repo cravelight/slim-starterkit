@@ -20,9 +20,10 @@ class EmailAccessCredentialRepository implements IEmailAccessCredentialRepositor
 
     public function fetchForEmailAddress(string $emailAddress) : EmailAccessCredential
     {
-        $model = EloquentEmailAccessCredential::findOrFail($emailAddress);
+        $model = EloquentEmailAccessCredential::find($emailAddress);
         return $this->getPopoFor($model);
     }
+
 
 
     private function getModelFor(EmailAccessCredential $popo) : EloquentEmailAccessCredential

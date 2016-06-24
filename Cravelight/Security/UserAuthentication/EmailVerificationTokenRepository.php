@@ -2,28 +2,50 @@
 
 namespace Cravelight\Security\UserAuthentication;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
 
+
+use Carbon\Carbon;
 
 class EmailVerificationTokenRepository implements IEmailVerificationTokenRepository
 {
-    /**
-     * @var Capsule
-     */
-    private $db;
-
-    public function __construct(Capsule $db)
-    {
-        $this->db = $db;
-    }
 
     public function store(EmailVerificationToken $emailVerificationToken) : EmailVerificationToken
     {
-        // TODO: Implement store() method.
+        $model = $this->getModelFor($emailVerificationToken);
+        $model->created_at = new Carbon(); // we never update these, they are disposable
+        $model->save();
+        return $this->fetch($emailVerificationToken->email, $emailVerificationToken->token);
     }
 
     public function fetch(string $email, string $token) : EmailVerificationToken
     {
-        // TODO: Implement fetch() method.
+        $model = EloquentEmailVerificationToken::where('email', $email)->where('token', $token)->first();
+        return is_null($model)
+            ? null
+            : $this->getPopoFor($model);
     }
+
+
+
+    private function getModelFor(EmailVerificationToken $popo) : EloquentEmailVerificationToken
+    {
+        $model = new EloquentEmailVerificationToken();
+        $model->email = $popo->email;
+        $model->token = $popo->token;
+        $model->expires_at = $popo->expiresAt;
+        $model->created_at = $popo->createdAt;
+        return $model;
+    }
+
+    private function getPopoFor(EloquentEmailVerificationToken $model) : EmailVerificationToken
+    {
+        $popo = new EmailVerificationToken($model->email);
+        $popo->token = $model->token;
+        $popo->expiresAt = $model->expires_at;
+        $popo->createdAt = $model->created_at;
+        return $popo;
+    }
+
+
+
 }

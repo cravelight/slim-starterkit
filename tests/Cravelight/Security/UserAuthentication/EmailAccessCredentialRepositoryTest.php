@@ -2,37 +2,13 @@
 
 use Cravelight\Security\UserAuthentication\EmailAccessCredential;
 use Cravelight\Security\UserAuthentication\EmailAccessCredentialRepository;
-use Cravelight\PhpUnit\Enhanced_TestCase;
+use Cravelight\PhpUnit\Database_TestCase;
 
 
-class EmailAccessCredentialRepositoryTest extends Enhanced_TestCase
+class EmailAccessCredentialRepositoryTest extends Database_TestCase
 {
     protected function setUp()
     {
-        $connection = [];
-        switch (getenv('DB_ADAPTER')) {
-            case 'sqlite':
-                $connection['driver'] = 'sqlite';
-                $connection['database'] = getenv('DB_NAME');
-                break;
-
-            case 'mysql':
-                $connection['driver'] = 'mysql';
-                $connection['host'] = getenv('DB_HOST');
-                $connection['port'] = getenv('DB_PORT');
-                $connection['database'] = getenv('DB_NAME');
-                $connection['username'] = getenv('DB_USER');
-                $connection['password'] = getenv('DB_PASS');
-                $connection['charset'] = getenv('DB_CHARSET');
-                $connection['collation'] = getenv('DB_COLLATION');
-                break;
-        }
-
-        $capsule = new \Illuminate\Database\Capsule\Manager;
-        $capsule->addConnection($connection);
-        $capsule->setAsGlobal();
-        $capsule->bootEloquent();
-
     }
 
     protected function tearDown()
@@ -40,7 +16,7 @@ class EmailAccessCredentialRepositoryTest extends Enhanced_TestCase
     }
 
 
-    public function testRepository()
+    public function testStore()
     {
         // Arrange|Given
         $email = 'test_' . uniqid() . '@example.com';

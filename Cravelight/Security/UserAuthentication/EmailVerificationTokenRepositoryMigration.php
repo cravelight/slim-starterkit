@@ -17,7 +17,6 @@ class EmailVerificationTokenRepositoryMigration extends AbstractMigration
             ->addColumn('email', 'string', array('limit' => 255))
             ->addColumn('expires_at', 'datetime', array('null' => true))
             ->addColumn('created_at', 'datetime')
-            ->addColumn('updated_at', 'datetime')
             ->save();
 
     }
